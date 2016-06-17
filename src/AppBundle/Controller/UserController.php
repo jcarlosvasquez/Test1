@@ -58,13 +58,13 @@ class UserController extends Controller
      */
     public function addAction()
     {
-        return $this->render(':user:add.html.twig', array('action' => 'app_add_docreate'));
+        return $this->render(':user:add.html.twig', array('action' => 'app_user_docreate'));
     }
 
     /**
      * @Route(
      *     path = "/docreate",
-     *     name = "app_add_docreate"
+     *     name = "app_user_docreate"
      * )
      * @return \Symfony\Component\HttpFoundation\Response
      */
