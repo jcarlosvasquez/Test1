@@ -143,6 +143,8 @@ class UserController extends Controller
 
         $this->addFlash('message', 'The user has been updated');
 
+        //Test compare
+
         return $this->redirect($this->generateUrl('app_user_index'), 301);
     }
 }
