@@ -2,17 +2,11 @@
 
 {% block body %}
     <h1> Hello again !!! </h1>
-    {% for user in users %}
-        <tr>
-            <td>{{ user.id }}</td>
-            <td>{{ user.username }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{ user.createdat | date("d/mY")}}</td>
-            <td>{{ user.updatedat | date("d/m/Y")}}</td>
-            <td><a href="edit/{{ user.id }}">Edit</a></td>
-            <td><a href="delete/{{ user.id }}">Delete</a></td>
-            <br>
-        </tr>
-    {% endfor %}
-    <br>
+
+    <form method="post" action="{{ path('app_add_docreate') }}">
+        <input type="text" name="usuario"><br>
+        <input type="email" name="correo"><br>
+        <input type="submit" value="ok">
+    </form>
+
 {% endblock %}
