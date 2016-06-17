@@ -1,3 +1,9 @@
-app:
+app_calc:
     resource: '@AppBundle/Controller/CalculatorController.php'
     type: annotation
+    prefix: calc
+
+app_user:
+    resource: '@AppBundle/Controller/UserController.php'
+    type: annotation
+    prefix: user
