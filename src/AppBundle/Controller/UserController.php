@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\User;
+use AppBundle\Form\UserType;
 use Symfony\Component\HttpFoundation\Request;
 
 class UserController extends Controller
@@ -58,32 +59,49 @@ class UserController extends Controller
      */
     public function addAction()
     {
-        return $this->render(':user:add.html.twig', array('action' => 'app_user_docreate'));
+        $user = new User();
+
+        $form = $this->createForm(UserType::class, $user);
+
+        return $this->render(':user:form.html.twig',
+            [
+                'form'  => $form->createView(),
+                'action' => $this->generateUrl('app_user_doCreate')
+            ]
+        );
     }
 
     /**
      * @Route(
      *     path = "/docreate",
-     *     name = "app_user_docreate"
+     *     name = "app_user_doCreate"
      * )
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function docreateAction(Request $request)
+    public function doCreateAction(Request $request)
     {
 
         $user = new User();
+        $form = $this->createForm(UserType::class, $user);
 
-        $user->setUsername($request->request->get('usuario'));
-        $user->setEmail($request->request->get('correo'));
+        $form->handleRequest($request);
 
-        $em = $this->getDoctrine()->getManager();
+        if ($form->isValid()){
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+            $this->addFlash('message', 'The user has been added');
+            return $this->redirect($this->generateUrl('app_user_index'), 301);
+        }
 
-        $em->persist($user);
+        $this->addFlash('message', 'Review your data');
 
-        $em->flush();
-
-        $this->addFlash('message', 'The user has been added');
-        return $this->redirect($this->generateUrl('app_user_index'), 301);
+        return $this->render(':user:form.html.twig',
+            [
+                'form'  => $form->createView(),
+                'action' => $this->generateUrl('app_user_doCreate')
+            ]
+        );
     }
 
     /**
@@ -120,31 +138,43 @@ class UserController extends Controller
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('AppBundle:User')->find($id);
 
-        return $this->render(':user:edit.html.twig',['user' => $user]);
-        
+        $form = $this->createForm(UserType::class, $user);
+
+        return $this->render(':user:form.html.twig',
+            [
+                'form'  => $form->createView(),
+                'action' => $this->generateUrl('app_user_doUpdate', ['id' => $id])
+            ]
+        );
     }
 
     /**
      * @Route(
-     *     path = "doupdate",
+     *     path = "/doupdate/{id}",
      *     name = "app_user_doUpdate"
      * )
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function doUpdateAction(Request $request)
+    public function doUpdateAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository('AppBundle:User')->find($request->request->get('id'));
+        $user = $em->getRepository('AppBundle:User')->find($id);
+        $form = $this->createForm(UserType::class, $user);
 
-        $user->setUsername($request->request->get('username'));
-        $user->setEmail($request->request->get('email'));
+        $form->handleRequest($request);
 
-        $em->flush();
+        if ($form->isValid()){
+            $em->flush();
+            $this->addFlash('message', 'The user has been updated');
+            return $this->redirect($this->generateUrl('app_user_index'), 301);
+        }
+        $this->addFlash('message', 'Review your data');
 
-        $this->addFlash('message', 'The user has been updated');
-
-        //Test compare
-
-        return $this->redirect($this->generateUrl('app_user_index'), 301);
+        return $this->render(':user:form.html.twig',
+            [
+                'form'  => $form->createView(),
+                'action' => $this->generateUrl('app_user_doUpdate', ['id' => $id])
+            ]
+        );
     }
 }
