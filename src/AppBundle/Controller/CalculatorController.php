@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Service\CalculatorService;
@@ -14,6 +15,7 @@ class CalculatorController extends Controller
      *     path = "/",
      *     name = "app_calculator_index"
      * )
+     * @Security("has_role('ROLE_ADMIN')")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction()

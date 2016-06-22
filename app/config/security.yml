@@ -7,6 +7,17 @@ security:
         in_memory:
             memory: ~
 
+    encoders:
+        AppBundle\Entity\User: bcrypt
+
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_USER]
+
+    providers:
+        db_users:
+            entity:
+                class: AppBundle:User
+
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
@@ -14,11 +25,16 @@ security:
             security: false
 
         main:
+            pattern:   ^/
             anonymous: ~
-            # activate different ways to authenticate
+            form_login:
+                login_path: app_security_login
+                check_path: app_security_check
+                #csrf_provider: security.csrf.token_manager
+            logout:
+                path: app_security_logout
+                target: /
 
-            # http_basic: ~
-            # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
-
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+    access_control:
+#        - { path: ^/update, roles: ROLE_ADMIN  }
+#        - { path: ^/remove, roles: ROLE_ADMIN  }

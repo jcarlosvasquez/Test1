@@ -20,29 +20,6 @@ class UserController extends Controller
      */
     public function indexAction()
     {
-        /*
-         *  Inserts "manuales"
-
-        $user = new User();
-        $user->setEmail('prova@prova.com');
-        $user->setUsername('test');
-
-        $em = $this->getDoctrine()->getManager();
-
-        $em->persist($user);
-
-        $user = new User();
-        $user->setEmail('jc@prova.com');
-        $user->setUsername('jc');
-
-        $em = $this->getDoctrine()->getManager();
-
-        $em->persist($user);
-
-
-        $em->flush();
-        */
-
         $repository = $this->getDoctrine()->getRepository('AppBundle:User');
 
         $users = $repository->findAll();

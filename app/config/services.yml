@@ -9,3 +9,9 @@ services:
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
     calculator:
         class: AppBundle\Service\CalculatorService
+
+    app.doctrine.userListener:
+        class: AppBundle\Doctrine\UserListener
+        arguments: ["@security.encoder_factory"]
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }

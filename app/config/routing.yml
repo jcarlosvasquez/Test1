@@ -7,3 +7,7 @@ app_user:
     resource: '@AppBundle/Controller/UserController.php'
     type: annotation
     prefix: user
+
+app_security:
+    resource: '@AppBundle/Controller/SecurityController.php'
+    type: annotation
