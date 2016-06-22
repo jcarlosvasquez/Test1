@@ -7,3 +7,10 @@ app_user:
     resource: '@AppBundle/Controller/UserController.php'
     type: annotation
     prefix: user
+
+app_translator:
+    resource: '@AppBundle/Controller/TranslatorController.php'
+    type: annotation
+    prefix: trans/{_locale}
+    requirements:
+        _locale: en|es|ca|fr
